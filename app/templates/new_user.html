@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="alert alert-danger" role="alert">
+  <ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+{% endwith %}
+<div style='padding-top: 50px; padding-left: 50px;'>
+  <h1>Create User</h1><br/>
+  <form action="" method="post" novalidate>
+      {{ form.hidden_tag() }}
+      <p>
+          {% for error in form.username.errors %}
+          <div class="alert alert-danger" style="width: 50%;">
+            <span style="color: red;">{{ error }}</span>
+          </div>
+          {% endfor %}
+          {{ form.username.label }}
+          <div style='width: 20%;'>{{ form.username(size=32, class_="form-control") }}</div>
+      </p>
+      <p>
+          {% for error in form.password.errors %}
+          <div class="alert alert-danger" style="width: 50%;">
+            <span style="color: red;">{{ error }}</span>
+          </div>
+          {% endfor %}
+          {{ form.password.label }}
+          <div style='width: 20%;'>{{ form.password(size=32, class_="form-control") }}</div>
+      </p>
+      <p>
+          {% for error in form.confirm.errors %}
+          <div class="alert alert-danger" style="width: 50%;">
+            <span style="color: red;">{{ error }}</span>
+          </div>
+          {% endfor %}
+          {{ form.confirm.label }}
+          <div style='width: 20%;'>{{ form.confirm(size=32, class_="form-control") }}</div>
+      </p>
+      <p>{{ form.submit(class_="btn btn-success") }}</p>
+  </form>
+</div>
+
+{% endblock %}

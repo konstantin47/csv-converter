@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {{ dropzone.create(action='upload') }}
+  {{ dropzone.load_js() }}
+  {{ dropzone.config() }}
+  {{ dropzone.config(redirect_url=url_for('download')) }}
+{% endblock %}

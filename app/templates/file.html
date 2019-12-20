@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div align="center" style='padding-top: 50px;'>
+  <h1>Download link</h1><br/>
+  <div class="alert alert-info" style="width: 50%;">
+    <span>Use this link within 1 hour. After that all files will be deleted</span>
+  </div>
+  <div class="form-group" style="width: 50%;">
+    <input class="form-control" id="url" readonly="readonly"><br/>
+    <a id="download-button" href="{{ url_for('download_file', folder=folder, filename=filename) }}" class="btn btn-success"">Download</a>
+    <button type="button" class="btn btn-success" onclick="copyToClipboard()">Copy link</button>
+  </div>
+  <div id="success-alert" class="alert alert-success" style="width: 50%; visibility: hidden;">
+    <span>Link was copied to clipboard</span>
+  </div>
+</div>
+
+<script>
+function copyToClipboard() {
+  var message = document.getElementById("success-alert");
+  message.style.visibility = 'hidden';
+  var copyText = document.getElementById("url");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  message.style.visibility = 'visible';
+}
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var href = document.getElementById("url");
+  var button = document.getElementById("download-button");
+  href.value = button.href;
+  button.click();
+}, false);
+</script>
+
+{% endblock %}
