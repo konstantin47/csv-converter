@@ -15,12 +15,3 @@ def fix_file(csv, txt):
 
         with codecs.open(txt, "w", "utf-8") as file_in:
             file_in.write(df.to_string(na_rep=''))
-
-
-def get_new_filename(path):
-    old_files = [f for f in os.listdir(path)]
-    if old_files:
-        old_nums = [int(file.split('.')[0]) for file in old_files]
-        return str(max(old_nums) + 1)
-    else:
-        return '1'

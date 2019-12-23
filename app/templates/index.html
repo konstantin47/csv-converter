@@ -1,8 +1,101 @@
 {% extends "base.html" %}
 
 {% block content %}
-  {{ dropzone.create(action='upload') }}
-  {{ dropzone.load_js() }}
-  {{ dropzone.config() }}
-  {{ dropzone.config(redirect_url=url_for('download')) }}
+<style>
+
+  body, html {
+    height: 100%;
+  }
+
+  #drop-area {
+    border: 2px dashed #ccc;
+    border-radius: 20px;
+    width: 80%;
+    height: 70%;
+    margin: 100px auto;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #drop-area:hover{
+    border-color: black;
+    background: #e6ffed;
+  }
+
+  p.text {
+    font: normal 2em fantasy;
+  }
+
+</style>
+
+<div style="text-align: center;">
+  <div id="error" align="center" style="width: 50%; display: none" class="alert alert-danger">
+  </div>
+</div>
+
+<div id="drop-area" onclick="clickForFile()">
+  <p class="text">Click to choose a file or drop it here</p>
+</div>
+<input id="file-input" type="file" name="name" style="display: none;" />
+
+<script>
+
+  var sendFile = function(file){
+    var formData = new FormData();
+    formData.append("file", file);
+
+    var error = document.getElementById('error')
+
+    var req = {
+        url: "/getfile",
+        method: "post",
+        processData: false,
+        contentType: false,
+        data: formData,
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          if (XMLHttpRequest.status == 400) {
+            error.innerHTML = "<strong>Error!</strong> CSV only"
+            error.style.display = "inline-block";
+          } else if (XMLHttpRequest.status >= 500) {
+            error.innerHTML = "<strong>Some unexpected server error occured!</strong>"
+            error.style.display = "inline-block";
+          }
+        },
+        success: function(data) {
+          var fname = data.filename;
+          window.location.href = '/file/'+fname;
+        }
+      }
+    var promise = $.ajax(req);
+  };
+
+  var dragHandler = function(evt){
+    evt.preventDefault();
+  };
+
+  var dropHandler = function(evt){
+    evt.preventDefault();
+    var files = evt.originalEvent.dataTransfer.files;
+    sendFile(files[0]);
+  };
+
+  var dropHandlerSet = {
+    dragover: dragHandler,
+    drop: dropHandler
+  };
+
+  $("#drop-area").on(dropHandlerSet);
+
+  var clickForFile = function(){
+    var input = document.getElementById('file-input');
+    $(input).trigger('click');
+    input.onchange = e => {
+      var file = e.target.files[0];
+      sendFile(file);
+    }
+  };
+
+</script>
+
 {% endblock %}
