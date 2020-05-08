@@ -13,5 +13,8 @@ def fix_file(csv, txt):
         for col in empty_cols:
             df[col] = ['' for _ in range(df.shape[0])]
 
-        with codecs.open(txt, "w", "utf-8") as file_in:
-            file_in.write(df.to_string(na_rep=''))
+        # with codecs.open(txt, "w", "utf-8") as file_in:
+        #     file_in.write(df.to_string(na_rep=''))
+        # with open(txt, 'w') as file_in:
+        #     file_in.write(df.to_string(na_rep=''))
+        df.to_csv(txt, sep="\t", index=False)
