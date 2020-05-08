@@ -5,7 +5,7 @@ import os
 class Eraser:
     def __init__(self):
         self.DIRS = [os.path.join(os.getcwd(), 'app', 'uploads'), os.path.join(os.getcwd(), 'app', 'downloads')]
-        self.delay = 3
+        self.delay = 300
         self.files = {}
 
     def run(self):
@@ -23,7 +23,7 @@ class Eraser:
                 for file in files:
                     path = address+'/'+file
                     if path not in self.files:
-                        self.files[path] = 5
+                        self.files[path] = 60
                         print('Added new file {}'.format(file))
 
     def count_values(self):
